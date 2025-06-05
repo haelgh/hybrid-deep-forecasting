@@ -219,6 +219,9 @@ def main():
     # 2) Train GMDH на train-set
     gmdh_layers, gmdh_history = fit_gmdh(X_train, y_train, max_layers=8)
 
+    joblib.dump(gmdh_layers, model_dir / "gmdh_layers.pkl")
+
+
     # 3) Form the input for the last GMDH layer
     # To do this, we will run through the same code as in fit_gmdh,
     # but we will only store the NUMBERS of the input features of the final layer
