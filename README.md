@@ -148,4 +148,4 @@ Input → Dense(32, ReLU) → Dense(16, ReLU) → Dense(1, Linear)
 
 ## 🙋 Questions?
 
-Feel free to open an issue or reach out on [LinkedIn](https://www.linkedin.com/in/olha--tytarenko/) if you’re interested in similar research.
+Feel free to open an issue or reach out on [LinkedIn](https://www.linkedin.com/in/olha--tytarenko/) or via [email](olhatytarenko03@gmail.com) if you’re interested in similar research.
