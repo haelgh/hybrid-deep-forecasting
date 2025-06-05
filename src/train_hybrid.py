@@ -216,9 +216,14 @@ def main():
     # 1) Loading scaled data
     X_train, y_train, X_test, y_test = load_data()
 
+    root = Path(__file__).resolve().parents[1]
+    model_dir = root / "models"
+    model_dir.mkdir(exist_ok=True)
+
     # 2) Train GMDH на train-set
     gmdh_layers, gmdh_history = fit_gmdh(X_train, y_train, max_layers=8)
 
+    # Save for plot_compare.py
     joblib.dump(gmdh_layers, model_dir / "gmdh_layers.pkl")
 
 
@@ -283,7 +288,7 @@ def main():
 
     # 7) Save the results
     root = Path(__file__).resolve().parents[1]
-    model_dir = root / "models"
+    
     np.save(model_dir / "hybrid_theta.npy", Theta)
     with open(model_dir / "hybrid_gmdh_history.json", "w") as f:
         json.dump(gmdh_history, f)
