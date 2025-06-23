@@ -10,27 +10,33 @@ import yfinance as yf
 import pandas as pd
 from pathlib import Path
 
-def main():
+# ⬇⬇⬇  ДОДАЙ ОЦЕ ⬇⬇⬇
+def get_data(symbol: str = "CSCO",
+             start: str = "2006-01-01",
+             end: str   = "2018-12-31") -> pd.DataFrame:
+    """
+    Завантажує котирування з Yahoo Finance і повертає DataFrame
+    з однією колонкою 'Close' (саме так очікує run_experiments.py).
+    """
+    df = yf.download(symbol, start=start, end=end,
+                     group_by="column", auto_adjust=False,
+                     progress=False)
+
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.get_level_values(0)
+
+    return df[["Close"]].dropna()
+# ⬆⬆⬆  ДОДАЙ ОЦЕ  ⬆⬆⬆
+
+def main():                     # ← твоя стара функція
     symbol = "CSCO"
-    start = "2006-01-01"
-    end   = "2018-12-31"
+    start  = "2006-01-01"
+    end    = "2018-12-31"
 
-    data = yf.download(
-        tickers=symbol,
-        start=start,
-        end=end,
-        group_by="column",
-        auto_adjust=False,
-        progress=False
-    )
-
+    data = get_data(symbol, start, end)   # ← тепер використовуємо
     if data.empty:
         print("No data downloaded.")
         return
-
-    # Flatten MultiIndex: keep only first level (fields Open, High, Low, Close, etc.)
-    if isinstance(data.columns, pd.MultiIndex):
-        data.columns = data.columns.get_level_values(0)
 
     out_path = Path(__file__).resolve().parents[1] / "data" / "raw" / "csco.csv"
     out_path.parent.mkdir(parents=True, exist_ok=True)
